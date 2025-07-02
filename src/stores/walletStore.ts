@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 
 interface WalletState {
@@ -9,31 +8,110 @@ interface WalletState {
   disconnect: () => void;
 }
 
-export const useWalletStore = create<WalletState>((set) => ({
-  address: null,
-  isConnected: false,
-  connect: async () => {
+export const useWalletStore = create<WalletState>((set) => {
+  let provider: ethers.providers.Web3Provider | null = null;
+
+const connect = async () => {
+  try {
+    if (typeof window.ethereum === 'undefined') {
+      throw new Error('MetaMask is not installed');
+    }
+
+    const xinfinParams = {
+      chainId: '0x32',
+      chainName: 'XinFin Network',
+      nativeCurrency: { name: 'XDC', symbol: 'XDC', decimals: 18 },
+      rpcUrls: ['https://erpc.xinfin.network'],
+      blockExplorerUrls: ['https://xdcscan.io/'],
+    };
+
+    // Switch or add network
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: xinfinParams.chainId }],
+      });
+    } catch (switchError: any) {
+      if (switchError.code === 4902) {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [xinfinParams],
+        });
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: xinfinParams.chainId }],
+        });
+      } else {
+        throw switchError;
+      }
+    }
+
+    // Force permission request every time
+    await window.ethereum.request({
+      method: 'wallet_requestPermissions',
+      params: [{ eth_accounts: {} }],
+    });
+
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+    if (!accounts || accounts.length === 0) {
+      throw new Error('No accounts found. Please connect to MetaMask.');
+    }
+
+    set({ address: accounts[0], isConnected: true });
+
+    window.ethereum.on('accountsChanged', handleAccountsChanged);
+    window.ethereum.on('chainChanged', handleChainChanged);
+
+  } catch (error) {
+    console.error('Failed to connect wallet:', error);
+    throw error;
+  }
+};
+
+
+  const disconnect = () => {
+    set({ address: null, isConnected: false });
+    window.location.href = '/';
+
+    // Remove event listeners
+    window.ethereum?.removeListener('accountsChanged', handleAccountsChanged);
+    window.ethereum?.removeListener('chainChanged', handleChainChanged);
+  };
+
+const handleAccountsChanged = async (accounts: string[]) => {
+  if (accounts.length === 0) {
+    console.log('MetaMask disconnected.');
+    disconnect();
+  } else {
+    // Always prompt MetaMask for account permissions
     try {
       if (typeof window.ethereum === 'undefined') {
         throw new Error('MetaMask is not installed');
       }
-
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
       await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x61' }], // ChainId 97 in hex
+        method: 'wallet_requestPermissions',
+        params: [{ eth_accounts: {} }],
       });
-
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      set({ address: accounts[0], isConnected: true });
-    } catch (error) {
-      console.error('Failed to connect wallet:', error);
-      throw error;
+    } catch (err) {
+      console.error('Permission request rejected or failed:', err);
+      disconnect();
+      return;
     }
-  },
-  disconnect: () => {
-    set({ address: null, isConnected: false });
-    // Redirect to home page
-    window.location.href = '/';
-  },
-}));
+    set({ address: accounts[0], isConnected: true });
+  }
+};
+  const handleChainChanged = () => {
+    console.log('Chain changed. Reloading page.');
+    window.location.reload();
+  };
+
+  return {
+    address: null,
+    isConnected: false,
+    connect,
+    disconnect,
+  };
+});

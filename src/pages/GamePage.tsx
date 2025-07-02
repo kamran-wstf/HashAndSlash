@@ -14,9 +14,11 @@ import { useSettingsStore } from '../stores/settingsStore';
 import { useStatsStore } from '../stores/statsStore';
 import { playSound } from '../utils/audio';
 import { WalletConnect } from '../components/WalletConnect';
+import { useWalletStore } from '../stores/walletStore';
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
+  const { isConnected } = useWalletStore();
   
   const { 
     board, 
@@ -88,6 +90,12 @@ const GamePage: React.FC = () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [status]);
+
+  useEffect(() => {
+  if (!isConnected) {
+    navigate('/');
+  }
+}, [isConnected, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">

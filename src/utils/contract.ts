@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import GameRewardABI from '../contracts/GameReward.json';
 
-const CONTRACT_ADDRESS = '0x93D76708375AbD91D96c7c4a6517cb6dFcf37f22'; 
+const CONTRACT_ADDRESS = '0xd7829c963Fc1FD9119D85Ee9a5300f3f2F36F865'; 
 
 export const getContract = async () => {
   if (typeof window.ethereum === 'undefined') {

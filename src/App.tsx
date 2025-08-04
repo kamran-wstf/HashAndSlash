@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import LandingPage from './pages/LandingPage';
 import GamePage from './pages/GamePage';
 import HowToPlayPage from './pages/HowToPlayPage';
 import SettingsPage from './pages/SettingsPage';
@@ -18,13 +19,9 @@ function App() {
 
   return (
     <div className="min-h-screen paper-bg">
-      {/* <header className="fixed top-0 left-0 right-0 z-50 p-4 bg-white/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto flex justify-end">
-          <WalletConnect />
-        </div>
-      </header> */}
       <main className="pt-16">
         <Routes>
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/game" element={<GamePage />} />
           <Route path="/how-to-play" element={<HowToPlayPage />} />

@@ -15,6 +15,7 @@ import { useStatsStore } from '../stores/statsStore';
 import { playSound } from '../utils/audio';
 import { WalletConnect } from '../components/WalletConnect';
 import { useWalletStore } from '../stores/walletStore';
+import Loader from '../components/Loader';
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
@@ -99,11 +100,7 @@ const GamePage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="fixed top-0 left-0 right-0 z-50 p-4 bg-white/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto flex justify-end">
-          <WalletConnect />
-        </div>
-      </header>
+     
       <NavBar/>
       
       <main className="flex-1 max-w-4xl mx-auto py-6 px-4">
@@ -120,10 +117,10 @@ const GamePage: React.FC = () => {
           </div>
         </div>
         
-        <SudokuBoard />
-        <NumberSelector />
-        <GameControls />
-      </main>
+    <SudokuBoard />
+    <NumberSelector />
+    <GameControls />
+  </main>
       
       {status === 'paused' && <PauseOverlay />}
       

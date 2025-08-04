@@ -5,6 +5,8 @@ import { Difficulty } from './settingsStore';
 import { usePointsStore } from './pointsStore';
 import { useWalletStore } from './walletStore';
 
+import { startGameSession, submitGameBatch, redeemPoints } from '../utils/contract';
+
 export type CellValue = number | null;
 export type CellNotes = number[];
 export type GameStatus = 'playing' | 'paused' | 'completed' | 'idle';
@@ -54,9 +56,9 @@ export const useGameStore = create<GameState>()(
       errors: 0,
       useNotes: false,
 
-      initializeGame: (difficulty) => {
+
+      initializeGame: async (difficulty) => {
         const { puzzle, solution } = generateSudoku(difficulty);
-        
         set({
           board: JSON.parse(JSON.stringify(puzzle)),
           solution: solution,
@@ -70,6 +72,16 @@ export const useGameStore = create<GameState>()(
           moves: 0,
           errors: 0
         });
+
+        // Start session on chain
+        try {
+          // You may want to generate a real initialStateHash based on the board
+          const initialStateHash = '0x' + '0'.repeat(64); // placeholder
+          const gameId = 1; // Replace with your gameId logic
+          await startGameSession(gameId, initialStateHash);
+        } catch (e) {
+          console.error('Failed to start game session on chain:', e);
+        }
       },
 
       selectCell: (row, col) => {
@@ -120,6 +132,32 @@ export const useGameStore = create<GameState>()(
         // Check if the game is completed
         if (get().checkCompletion()) {
           set({ status: 'completed' });
+
+          // Only call batch transaction and redeem points when user wins
+          (async () => {
+            try {
+              // Use number of moves as the batch size
+              const moves = get().moves;
+              const gameId = 1; // Replace with your gameId logic
+              // Create dummy actions array with length = moves
+              const actions = Array.from({ length: moves }, (_, i) => ({
+                timestamp: Date.now(),
+                actionType: 0, // Replace with actual action type if needed
+                value: 0,      // Replace with actual value if needed
+                scoreChange: 0 // Replace with actual score change if needed
+              }));
+              const finalScore = moves; // Or use your own scoring logic
+              const finalStateHash = '0x' + '0'.repeat(64); // placeholder
+              const proof = '0x'; // placeholder'
+              console.log('Submitting game batch...');
+              await submitGameBatch(gameId, actions, finalScore, finalStateHash, proof);
+
+              // Redeem points (replace with actual points logic)
+              await redeemPoints(100);
+            } catch (e) {
+              console.error('Failed to submit batch or redeem points:', e);
+            }
+          })();
         }
       },
 

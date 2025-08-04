@@ -18,11 +18,11 @@ const connect = async () => {
     }
 
     const xinfinParams = {
-      chainId: '0x32',
-      chainName: 'XinFin Network',
-      nativeCurrency: { name: 'XDC', symbol: 'XDC', decimals: 18 },
-      rpcUrls: ['https://erpc.xinfin.network'],
-      blockExplorerUrls: ['https://xdcscan.io/'],
+      chainId: '0x33', // Hexadecimal for 51
+      chainName: 'XDC Apothem Network',
+      nativeCurrency: { name: 'TXDC', symbol: 'TXDC', decimals: 18 },
+      rpcUrls: ['https://rpc.apothem.network'],
+      blockExplorerUrls: ['https://testnet.xdcscan.io/'],
     };
 
     // Switch or add network

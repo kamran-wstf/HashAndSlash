@@ -40,6 +40,7 @@ export const getContract = async () => {
     throw new Error('MetaMask is not installed');
   }
 
+  console.log("WHy console is not working")
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   return new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, signer);

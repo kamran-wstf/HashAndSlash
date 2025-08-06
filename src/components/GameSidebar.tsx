@@ -23,10 +23,9 @@ const GameSidebar: React.FC<{ onEndGame: () => void }> = ({ onEndGame }) => {
             </div>
             <button className="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 mt-auto"
 
-                onClick={async() => {
+                onClick={async () => {
 
-                   await onEndGame();
-                    alert("Button works!");
+                    await onEndGame();
 
                 }}>End Game</button>
 

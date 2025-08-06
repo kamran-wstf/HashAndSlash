@@ -69,6 +69,7 @@ const GamePage: React.FC = () => {
   const handleNewGame = () => {
     initializeGame(difficulty);
     setShowWinModal(false);
+    useGameStore.setState({ activityLog: [], points: 0 }); // Clear previous activity and points
   };
 
   // Update document title
@@ -105,19 +106,37 @@ const GamePage: React.FC = () => {
 
   // End game handler
   const handleEndGame = async () => {
-    console.log("activity logs", activityLog)
     const actions = activityLog.map(act => ({
       timestamp: act.timestamp,
       actionType: 1,
       value: act.value === null ? 0 : act.value,
-      scoreChange: act.correct ? 5 : -2
+      scoreChange: act.correct ? 5 : 0
     }));
 
-    // Use a valid bytes32 value for finalStateHash
-    const finalStateHash = ethers.utils.formatBytes32String("10"); // Replace "10" with your actual state hash if available
+    const finalStateHash = ethers.utils.formatBytes32String("10");
 
-    await submitGameBatch(1, actions, points, finalStateHash, '0x');
-    alert("endgame clicked 00");
+    try {
+      await submitGameBatch(1, actions, points, finalStateHash, '0x');
+      navigate('/'); // Go to home page after successful submission
+    } catch (error: any) {
+      const message =
+        error?.data?.message || error?.message || error?.toString();
+
+      if (message.includes("Batch interval not met")) {
+        alert("You must wait before submitting another batch. Please try again later.");
+      } else if (message.includes("Empty batch")) {
+        alert("No moves have been made. Please make at least one move before ending the game.");
+      } else if (message.includes("execution reverted")) {
+        alert("The transaction was reverted by the contract. Please check your game state and try again.");
+      } else if (message.includes("User denied transaction")) {
+        alert("You cancelled the transaction in your wallet.");
+      } else if (message.includes("insufficient funds")) {
+        alert("You do not have enough funds to perform this transaction.");
+      } else {
+        alert("An unexpected error occurred: " + message);
+      }
+      // User can try again by clicking End Game again
+    }
   };
 
   return (

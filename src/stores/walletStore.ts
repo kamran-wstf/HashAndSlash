@@ -11,65 +11,65 @@ interface WalletState {
 export const useWalletStore = create<WalletState>((set) => {
   let provider: ethers.providers.Web3Provider | null = null;
 
-const connect = async () => {
-  try {
-    if (typeof window.ethereum === 'undefined') {
-      throw new Error('MetaMask is not installed');
-    }
-
-    const xinfinParams = {
-      chainId: '0x33', // Hexadecimal for 51
-      chainName: 'XDC Apothem Network',
-      nativeCurrency: { name: 'TXDC', symbol: 'TXDC', decimals: 18 },
-      rpcUrls: ['https://rpc.apothem.network'],
-      blockExplorerUrls: ['https://testnet.xdcscan.io/'],
-    };
-
-    // Switch or add network
+  const connect = async () => {
     try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: xinfinParams.chainId }],
-      });
-    } catch (switchError: any) {
-      if (switchError.code === 4902) {
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [xinfinParams],
-        });
+      if (typeof window.ethereum === 'undefined') {
+        throw new Error('MetaMask is not installed');
+      }
+
+      const xinfinParams = {
+        chainId: '0x33', // Hexadecimal for 51
+        chainName: 'XDC Apothem Network',
+        nativeCurrency: { name: 'TXDC', symbol: 'TXDC', decimals: 18 },
+        rpcUrls: ['https://rpc.apothem.network'],  //https://rpc.apothem.network //https://rpc.ankr.com/xdc_testnet
+        blockExplorerUrls: ['https://testnet.xdcscan.io/'],
+      };
+
+      // Switch or add network
+      try {
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: xinfinParams.chainId }],
         });
-      } else {
-        throw switchError;
+      } catch (switchError: any) {
+        if (switchError.code === 4902) {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [xinfinParams],
+          });
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: xinfinParams.chainId }],
+          });
+        } else {
+          throw switchError;
+        }
       }
+
+      // Force permission request every time
+      await window.ethereum.request({
+        method: 'wallet_requestPermissions',
+        params: [{ eth_accounts: {} }],
+      });
+
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      if (!accounts || accounts.length === 0) {
+        throw new Error('No accounts found. Please connect to MetaMask.');
+      }
+
+      set({ address: accounts[0], isConnected: true });
+
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on('chainChanged', handleChainChanged);
+
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+      throw error;
     }
-
-    // Force permission request every time
-    await window.ethereum.request({
-      method: 'wallet_requestPermissions',
-      params: [{ eth_accounts: {} }],
-    });
-
-    provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-    if (!accounts || accounts.length === 0) {
-      throw new Error('No accounts found. Please connect to MetaMask.');
-    }
-
-    set({ address: accounts[0], isConnected: true });
-
-    window.ethereum.on('accountsChanged', handleAccountsChanged);
-    window.ethereum.on('chainChanged', handleChainChanged);
-
-  } catch (error) {
-    console.error('Failed to connect wallet:', error);
-    throw error;
-  }
-};
+  };
 
 
   const disconnect = () => {
@@ -81,28 +81,28 @@ const connect = async () => {
     window.ethereum?.removeListener('chainChanged', handleChainChanged);
   };
 
-const handleAccountsChanged = async (accounts: string[]) => {
-  if (accounts.length === 0) {
-    console.log('MetaMask disconnected.');
-    disconnect();
-  } else {
-    // Always prompt MetaMask for account permissions
-    try {
-      if (typeof window.ethereum === 'undefined') {
-        throw new Error('MetaMask is not installed');
-      }
-      await window.ethereum.request({
-        method: 'wallet_requestPermissions',
-        params: [{ eth_accounts: {} }],
-      });
-    } catch (err) {
-      console.error('Permission request rejected or failed:', err);
+  const handleAccountsChanged = async (accounts: string[]) => {
+    if (accounts.length === 0) {
+      console.log('MetaMask disconnected.');
       disconnect();
-      return;
+    } else {
+      // Always prompt MetaMask for account permissions
+      try {
+        if (typeof window.ethereum === 'undefined') {
+          throw new Error('MetaMask is not installed');
+        }
+        await window.ethereum.request({
+          method: 'wallet_requestPermissions',
+          params: [{ eth_accounts: {} }],
+        });
+      } catch (err) {
+        console.error('Permission request rejected or failed:', err);
+        disconnect();
+        return;
+      }
+      set({ address: accounts[0], isConnected: true });
     }
-    set({ address: accounts[0], isConnected: true });
-  }
-};
+  };
   const handleChainChanged = () => {
     console.log('Chain changed. Reloading page.');
     window.location.reload();

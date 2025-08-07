@@ -7,8 +7,8 @@ export const startGameSession = async (gameId: number, initialStateHash: string,
   try {
     const contract = await getContract();
     const tx = await contract.startGameSession(gameId, initialStateHash, { value });
-    console.log('Transaction hash:', tx.hash);
     await tx.wait();
+    console.log("start session", tx)
     return true;
   } catch (error) {
     console.error('Error starting game session:', error);
@@ -17,6 +17,8 @@ export const startGameSession = async (gameId: number, initialStateHash: string,
 };
 
 // Submit a batch of actions at game completion
+import { BigNumber } from "ethers";
+
 export const submitGameBatch = async (
   gameId: number,
   actions: Array<{ timestamp: number; actionType: number; value: number; scoreChange: number }>,
@@ -26,11 +28,39 @@ export const submitGameBatch = async (
 ) => {
   try {
     const contract = await getContract();
-    const tx = await contract.submitGameBatch(gameId, actions, finalScore, finalStateHash, proof);
+
+    // Estimate gas
+    const estimatedGas = await contract.estimateGas.submitGameBatch(
+      gameId,
+      actions,
+      finalScore,
+      finalStateHash,
+      proof
+    );
+
+    // Add a buffer to the estimated gas (e.g., 20% more)
+    const gasLimit = estimatedGas.mul(120).div(100); // +20%
+
+    // Optional: Manually set max fee / priority fee (for EIP-1559 chains)
+    const overrides = {
+      gasLimit,
+      maxFeePerGas: BigNumber.from("30000000000"), // 30 Gwei
+      maxPriorityFeePerGas: BigNumber.from("2000000000"), // 2 Gwei
+    };
+
+    const tx = await contract.submitGameBatch(
+      gameId,
+      actions,
+      finalScore,
+      finalStateHash,
+      proof,
+      overrides
+    );
+
     await tx.wait();
     return true;
   } catch (error) {
-    console.error('Error submitting game batch:', error);
+    console.error("Error submitting game batch:", error);
     throw error;
   }
 };

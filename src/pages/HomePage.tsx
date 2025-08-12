@@ -8,9 +8,10 @@ import { useGameStore } from '../stores/gameStore';
 import { useSettingsStore, Difficulty } from '../stores/settingsStore';
 import { useStatsStore } from '../stores/statsStore';
 import { useWalletStore } from '../stores/walletStore';
-import { usePointsStore } from '../stores/pointsStore';
 import { playSound, preloadSounds, playBackgroundMusic } from '../utils/audio';
 import { WalletConnect } from '../components/WalletConnect';
+import { checkUserBalances } from '../utils/gameStart';
+import { ethers } from 'ethers';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -18,21 +19,35 @@ const HomePage: React.FC = () => {
   const { difficulty } = useSettingsStore();
   const { incrementGamesStarted, updateLastPlayed } = useStatsStore();
   const { isConnected, connect, address } = useWalletStore();
-  const { getPoints, pointsPerDifficulty } = usePointsStore();
+  const [availablePoints, setAvailablePoints] = React.useState(0);
 
-  const userPoints = address ? getPoints(address) : 0;
+  React.useEffect(() => {
+    const fetchBalances = async () => {
+      if (address && window.ethereum) {
+        try {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const balances = await checkUserBalances(address, provider);
+          setAvailablePoints(Number(balances.availablePoints));
+        } catch (error) {
+          console.error('Error fetching balances:', error);
+        }
+      }
+    };
+
+    fetchBalances();
+  }, [address]);
 
   useEffect(() => {
     // Preload sounds when the home page loads
     preloadSounds();
-    
+
     // Start background music (if enabled)
     playBackgroundMusic();
   }, []);
 
   const handlePlay = async () => {
     playSound('navigate');
-    
+
     if (!isConnected) {
       try {
         await connect();
@@ -41,14 +56,14 @@ const HomePage: React.FC = () => {
         return;
       }
     }
-    
+
     // Initialize a new game with the current difficulty
     initializeGame(difficulty);
-    
+
     // Update statistics
     incrementGamesStarted();
     updateLastPlayed();
-    
+
     // Navigate to the game page
     navigate('/game');
   };
@@ -64,7 +79,7 @@ const HomePage: React.FC = () => {
           <WalletConnect />
         </div>
       </header>} */}
-      
+
       <main className="flex-1 max-w-4xl mx-auto py-8 px-4 flex flex-col items-center justify-center">
         <div className="paper-bg rounded-lg shadow-lg p-8 w-full max-w-md text-center">
           <div className="mb-6">
@@ -77,40 +92,30 @@ const HomePage: React.FC = () => {
             {isConnected && (
               <div className="mt-4 flex items-center justify-center gap-2 text-ink-800">
                 <Trophy size={20} className="text-yellow-500" />
-                <span className="font-medium">Your Points: {userPoints}</span>
+                <span className="font-medium">Available Points: {availablePoints}</span>
               </div>
             )}
           </div>
-          
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-3">Points per Difficulty:</h2>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="bg-paper-200 p-2 rounded">Easy: {pointsPerDifficulty.easy} pts</div>
-              <div className="bg-paper-200 p-2 rounded">Medium: {pointsPerDifficulty.medium} pts</div>
-              <div className="bg-paper-200 p-2 rounded">Hard: {pointsPerDifficulty.hard} pts</div>
-              <div className="bg-paper-200 p-2 rounded">Expert: {pointsPerDifficulty.expert} pts</div>
-            </div>
-          </div>
-          
-          <DifficultySelector 
-            onSelectDifficulty={handleSelectDifficulty} 
+
+          <DifficultySelector
+            onSelectDifficulty={handleSelectDifficulty}
             className="mb-8"
           />
-          
+
           <div className="flex flex-col gap-4">
             <button
               className={`w-full py-3 text-white rounded-md shadow-md
                          focus:outline-none focus:ring-2 focus:ring-opacity-50 
                          flex items-center justify-center gap-2
-                         ${isConnected 
-                           ? 'bg-red-600 hover:bg-red-700 focus:ring-red-600' 
-                           : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-600'}`}
+                         ${isConnected
+                  ? 'bg-red-600 hover:bg-red-700 focus:ring-red-600'
+                  : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-600'}`}
               onClick={handlePlay}
             >
               <Play size={20} />
               {isConnected ? 'Play Now' : 'Connect Wallet to Play'}
             </button>
-            
+
             <Link
               to="/how-to-play"
               className="w-full py-3 bg-paper-200 text-ink-800 rounded-md shadow-md
@@ -130,7 +135,7 @@ const HomePage: React.FC = () => {
           </div>
         )}
       </main>
-      
+
       <footer className="py-4 text-center text-sm text-ink-800 text-opacity-60">
         <p>© 2025 Sudoku</p>
       </footer>

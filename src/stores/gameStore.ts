@@ -7,7 +7,7 @@ import { useWalletStore } from './walletStore';
 import { ethers } from 'ethers';
 import { checkUserBalances, startGameWithExistingTokens } from '../utils/gameStart';
 
-import { startGameSession, recordGameActivity, redeemPoints } from '../utils/contract';
+import { startGameSession, recordGameActivity, redeemPointsForGameToken } from '../utils/contract';
 
 export type CellValue = number | null;
 export type CellNotes = number[];

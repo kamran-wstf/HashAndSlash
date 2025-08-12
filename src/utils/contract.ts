@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
 import GameRewardABI from '../contracts/GameReward.json';
+import { CONFIG } from '../config/environment';
 
-const CONTRACT_ADDRESS = '0x93D09FfCA6EF76792f19Fed7D12101cf45f6FC6E'; // Update as needed
+const CONTRACT_ADDRESS = CONFIG.CONTRACT_ADDRESS; // Update as needed
 const GAME_ID = 2; // Sudoku game ID
 // Start a new game session
 export const startGameSession = async (gameId: number, amount: string) => {
@@ -23,7 +24,6 @@ export async function recordGameActivity(activities: any[], signer: ethers.Signe
     const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, signer);
 
     // Record batch of activities
-    console.log("activities", activities)
     const txHash = await contract.recordActivityBatch(
       GAME_ID,
       userAddress,
@@ -50,14 +50,14 @@ export const getContract = async () => {
   return new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, signer);
 };
 
-export const redeemPoints = async (points: number) => {
+export const redeemPointsForGameToken = async (gameId: number, points: number) => {
   try {
     const contract = await getContract();
-    const tx = await contract.redeemPoints(points);
+    const tx = await contract.redeemPointsForGameToken(gameId, points);
     await tx.wait();
-    return true;
+    return tx;
   } catch (error) {
-    console.error('Error redeeming points:', error);
+    console.error('Error redeeming points for game token:', error);
     throw error;
   }
 };

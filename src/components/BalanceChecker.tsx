@@ -30,6 +30,7 @@ export const BalanceChecker: React.FC = () => {
             }
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const userBalances = await checkUserBalances(address, provider);
+            console.log("userBalances +++ ", userBalances)
             setBalances(userBalances);
         } catch (err) {
             console.error('Error checking balances:', err);

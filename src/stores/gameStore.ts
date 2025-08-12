@@ -5,6 +5,7 @@ import { Difficulty } from './settingsStore';
 import { usePointsStore } from './pointsStore';
 import { useWalletStore } from './walletStore';
 import { ethers } from 'ethers';
+import { checkUserBalances, startGameWithExistingTokens } from '../utils/gameStart';
 
 import { startGameSession, submitGameBatch, redeemPoints } from '../utils/contract';
 
@@ -27,9 +28,14 @@ export interface GameState {
   useNotes: boolean;
   points: number;
   activityLog: { row: number, col: number, value: number | null, correct: boolean, timestamp: number }[];
+  balances: {
+    gameTokenBalance: bigint;
+    hnsBalance: bigint;
+  };
+  blockchainError: string | null;
 
   // Actions
-  initializeGame: (difficulty: Difficulty) => void;
+  initializeGame: (difficulty: Difficulty) => Promise<{ success: boolean; error?: string }>;
   selectCell: (row: number, col: number) => void;
   setValueInCell: (value: number | null) => void;
   toggleNoteInCell: (value: number) => void;
@@ -42,6 +48,8 @@ export interface GameState {
   resetGame: () => void;
   clearSelection: () => void;
   addActivity: (row: number, col: number, value: number | null, correct: boolean) => void;
+  checkBalances: () => Promise<void>;
+  clearBlockchainError: () => void;
 }
 
 export const useGameStore = create<GameState>()(
@@ -61,32 +69,88 @@ export const useGameStore = create<GameState>()(
       useNotes: false,
       points: 0,
       activityLog: [],
+      balances: {
+        gameTokenBalance: BigInt(0),
+        hnsBalance: BigInt(0)
+      },
+      blockchainError: null,
+
+      checkBalances: async () => {
+        const { address } = useWalletStore.getState();
+        if (!address) return;
+
+        try {
+          if (!window.ethereum) {
+            throw new Error('MetaMask not installed');
+          }
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const userBalances = await checkUserBalances(address, provider);
+          set({ balances: userBalances });
+        } catch (error) {
+          console.error('Failed to check balances:', error);
+          set({ blockchainError: 'Failed to check balances' });
+        }
+      },
 
       initializeGame: async (difficulty) => {
-        const { puzzle, solution } = generateSudoku(difficulty);
-        set({
-          board: JSON.parse(JSON.stringify(puzzle)),
-          solution: solution,
-          originalBoard: JSON.parse(JSON.stringify(puzzle)),
-          notes: Array(9).fill(null).map(() => Array(9).fill([])),
-          difficulty,
-          selectedCell: null,
-          status: 'playing',
-          startTime: Date.now(),
-          elapsedTime: 0,
-          moves: 0,
-          errors: 0
-        });
+        const { address } = useWalletStore.getState();
+        if (!address) {
+          return { success: false, error: 'Please connect your wallet' };
+        }
 
-        // Start session on chain
         try {
-          // You may want to generate a real initialStateHash based on the board
-          const requiredAmount = ethers.utils.parseEther("1")
-          // placeholder
-          const gameId = 2; // Replace with your gameId logic
-          await startGameSession(gameId, requiredAmount.toString());
-        } catch (e) {
-          console.error('Failed to start game session on chain:', e);
+          // Check user balances first
+          await get().checkBalances();
+          const { balances } = get();
+
+          // Check if user has sufficient tokens
+          const requiredTokens = BigInt(ethers.utils.parseEther('1').toString());
+
+          if (balances.gameTokenBalance === BigInt(0) && balances.hnsBalance === BigInt(0)) {
+            return {
+              success: false,
+              error: 'Insufficient balance. You need at least 1 SD token or HNS to start the game.'
+            };
+          }
+
+          if (balances.gameTokenBalance < requiredTokens) {
+            return {
+              success: false,
+              error: 'Insufficient SD tokens. You need at least 1 SD token to start the game.'
+            };
+          }
+
+          // Start game with existing tokens
+          if (!window.ethereum) {
+            return { success: false, error: 'MetaMask not installed' };
+          }
+          const result = await startGameWithExistingTokens(address, await new ethers.providers.Web3Provider(window.ethereum).getSigner());
+
+          if (!result.success) {
+            return { success: false, error: result.error || 'Failed to start game' };
+          }
+
+          // Generate puzzle and initialize game state
+          const { puzzle, solution } = generateSudoku(difficulty);
+          set({
+            board: JSON.parse(JSON.stringify(puzzle)),
+            solution: solution,
+            originalBoard: JSON.parse(JSON.stringify(puzzle)),
+            notes: Array(9).fill(null).map(() => Array(9).fill([])),
+            difficulty,
+            selectedCell: null,
+            status: 'playing',
+            startTime: Date.now(),
+            elapsedTime: 0,
+            moves: 0,
+            errors: 0,
+            blockchainError: null
+          });
+
+          return { success: true };
+        } catch (error) {
+          console.error('Failed to initialize game:', error);
+          return { success: false, error: 'Failed to start game. Please try again.' };
         }
       },
 
@@ -147,7 +211,7 @@ export const useGameStore = create<GameState>()(
             try {
               // Use number of moves as the batch size
               const moves = get().moves;
-              const gameId = 1; // Replace with your gameId logic
+              const gameId = 2; // Use GAME_ID = 2 for Sudoku
               // Create dummy actions array with length = moves
               const actions = Array.from({ length: moves }, (_, i) => ({
                 timestamp: Date.now(),
@@ -296,6 +360,10 @@ export const useGameStore = create<GameState>()(
           ]
         };
       }),
+
+      clearBlockchainError: () => {
+        set({ blockchainError: null });
+      },
     }),
     {
       name: 'sudoku-game-state',

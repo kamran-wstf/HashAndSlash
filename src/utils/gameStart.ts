@@ -29,10 +29,10 @@ const HNS_TOKEN_ABI = [
 ];
 
 // Check HNS token balance using the HNS token contract
-export async function checkHNSTokenBalance(userAddress: string, provider: ethers.providers.Web3Provider) {
+export async function checkHNSTokenBalance(userAddress: string, provider: ethers.providers.Provider) {
     try {
         // Get the main contract instance
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI.abi, provider);
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, provider);
 
         // Get HNS token contract address
         const hnsTokenAddress = await contract.hnsToken();
@@ -51,9 +51,9 @@ export async function checkHNSTokenBalance(userAddress: string, provider: ethers
 }
 
 // Check Game token balance using getTransactionLogs
-export async function checkGameTokenBalance(userAddress: string, provider: ethers.providers.Web3Provider) {
+export async function checkGameTokenBalance(userAddress: string, provider: ethers.providers.Provider) {
     try {
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI.abi, provider);
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, provider);
 
         // Call getTransactionLogs with Game ID = 2
         const transactionLogs = await contract.getTransactionLogs(GAME_ID, userAddress);
@@ -66,9 +66,9 @@ export async function checkGameTokenBalance(userAddress: string, provider: ether
 }
 
 // Comprehensive balance checking function
-export async function checkUserBalances(userAddress: string, provider: ethers.providers.Web3Provider) {
+export async function checkUserBalances(userAddress: string, provider: ethers.providers.Provider) {
     try {
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI.abi, provider);
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, provider);
 
         // Check HNS token balance
         const hnsBalance = await checkHNSTokenBalance(userAddress, provider);
@@ -78,6 +78,10 @@ export async function checkUserBalances(userAddress: string, provider: ethers.pr
 
         // Get additional info from getTransactionLogs
         const transactionLogs = await contract.getTransactionLogs(GAME_ID, userAddress);
+
+        // console.log("transactionLogs", transactionLogs);
+        // console.log("gameTokenBalance", gameTokenBalance);
+        // console.log("hnsBalance", hnsBalance);
 
         return {
             gameTokenBalance,
@@ -99,13 +103,13 @@ export async function checkUserBalances(userAddress: string, provider: ethers.pr
 // Start game with existing tokens
 export async function startGameWithExistingTokens(userAddress: string, signer: ethers.Signer) {
     try {
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI.abi, signer);
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, signer);
         const requiredAmount = ethers.utils.parseEther(REQUIRED_TOKENS.toString());
 
         // Check game token balance using getTransactionLogs
         const gameTokenBalance = await checkGameTokenBalance(userAddress, signer.provider!);
 
-        if (gameTokenBalance < requiredAmount) {
+        if (gameTokenBalance < BigInt(requiredAmount.toString())) {
             return { success: false, error: 'Insufficient game tokens' };
         }
 
@@ -117,11 +121,12 @@ export async function startGameWithExistingTokens(userAddress: string, signer: e
 
         // Post transaction to backend API (if available)
         try {
-            await postBurnTransaction(userAddress, burnTx.hash, REQUIRED_TOKENS, 0, CONTRACT_ADDRESS, 'SUDOKU');
+            await postBurnTransaction(userAddress, burnTx.hash, REQUIRED_TOKENS, 1, CONTRACT_ADDRESS, 'SD');
         } catch (apiError) {
             console.warn('Failed to post transaction to backend:', apiError);
         }
 
+        console.log("burnTx", { success: true, action: 'burned', txHash: burnTx.hash });
         return { success: true, action: 'burned', txHash: burnTx.hash };
     } catch (error) {
         console.error('Failed to start game with existing tokens:', error);
@@ -132,13 +137,13 @@ export async function startGameWithExistingTokens(userAddress: string, signer: e
 // Comprehensive game start function
 export async function startGame(userAddress: string, signer: ethers.Signer) {
     try {
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI.abi, signer);
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, signer);
         const requiredAmount = ethers.utils.parseEther(REQUIRED_TOKENS.toString());
 
         // Check game token balance first
         const gameTokenBalance = await checkGameTokenBalance(userAddress, signer.provider!);
 
-        if (gameTokenBalance >= requiredAmount) {
+        if (gameTokenBalance >= BigInt(requiredAmount.toString())) {
             // Burn existing tokens
             const burnTx = await contract.burnGameTokenForHNS(GAME_ID, requiredAmount, {
                 gasLimit: 200000,
@@ -150,7 +155,7 @@ export async function startGame(userAddress: string, signer: ethers.Signer) {
         // Check HNS token balance
         const hnsBalance = await checkHNSTokenBalance(userAddress, signer.provider!);
 
-        if (hnsBalance >= requiredAmount) {
+        if (hnsBalance >= BigInt(requiredAmount.toString())) {
             // Purchase and burn tokens
             const hnsTokenAddress = await contract.hnsToken();
             const hnsToken = new ethers.Contract(hnsTokenAddress, HNS_TOKEN_ABI, signer);
@@ -175,6 +180,10 @@ export async function startGame(userAddress: string, signer: ethers.Signer) {
 
             return { success: true, action: 'purchased_and_burned', txHash: burnTx.hash };
         }
+
+        console.log("gameTokenBalance", gameTokenBalance);
+        console.log("hnsBalance", hnsBalance);
+        console.log("requiredAmount", requiredAmount);
 
         return {
             success: false,
@@ -201,7 +210,8 @@ async function postBurnTransaction(
     gameToken: string
 ): Promise<void> {
     try {
-        const response = await fetch('/api/transactions', {
+        console.log("Backend url", CONFIG.BACKEND_URL)
+        const response = await fetch(`${CONFIG.BACKEND_URL}/api/transactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

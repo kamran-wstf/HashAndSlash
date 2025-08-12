@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useWalletStore } from '../stores/walletStore';
 import { redeemPointsForGameToken } from '../utils/contract';
-import { checkUserBalances } from '../utils/gameStart';
+import { checkUserBalances, postBurnTransaction } from '../utils/gameStart';
 import { ethers } from 'ethers';
+import { CONFIG } from '../config/environment';
 
 export const PointsRedeem = () => {
   const { address, isConnected } = useWalletStore();
@@ -41,7 +42,14 @@ export const PointsRedeem = () => {
     setError('');
 
     try {
-      await redeemPointsForGameToken(2, availablePoints); // Game ID 2 for Sudoku
+      const txHash = await redeemPointsForGameToken(2, availablePoints);
+      try {
+        await postBurnTransaction(address, txHash.hash, 'Conversion', 0, availablePoints, CONFIG.CONTRACT_ADDRESS, 'SD');
+        console.log("txHash", txHash)
+      } catch (apiError) {
+        console.warn('Failed to post transaction to backend:', apiError);
+      }
+      // Game ID 2 for Sudoku
       setAvailablePoints(0); // Reset points after successful redemption
     } catch (error) {
       setError('Failed to redeem points. Please try again.');

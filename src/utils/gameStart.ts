@@ -121,7 +121,7 @@ export async function startGameWithExistingTokens(userAddress: string, signer: e
 
         // Post transaction to backend API (if available)
         try {
-            await postBurnTransaction(userAddress, burnTx.hash, REQUIRED_TOKENS, 1, CONTRACT_ADDRESS, 'SD');
+            await postBurnTransaction(userAddress, burnTx.hash, 'Burn', 1, 1, CONTRACT_ADDRESS, 'SD');
         } catch (apiError) {
             console.warn('Failed to post transaction to backend:', apiError);
         }
@@ -272,9 +272,10 @@ async function postRewardTransaction(
 }
 
 // Backend transaction posting
-async function postBurnTransaction(
+export async function postBurnTransaction(
     from: string,
     transactionHash: string,
+    transactionType: string,
     fromAmount: number,
     toAmount: number,
     toAddress: string,
@@ -289,7 +290,7 @@ async function postBurnTransaction(
             },
             body: JSON.stringify({
                 from,
-                transactionType: 'Burn',
+                transactionType,
                 transactionHash,
                 gameToken,
                 fromAmount,

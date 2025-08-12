@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import GameRewardABI from '../contracts/GameReward.json';
 import { CONFIG } from '../config/environment';
+import { postBurnTransaction } from './gameStart';
 
 const CONTRACT_ADDRESS = CONFIG.CONTRACT_ADDRESS; // Update as needed
 const GAME_ID = 2; // Sudoku game ID
@@ -31,6 +32,12 @@ export async function recordGameActivity(activities: any[], signer: ethers.Signe
     );
 
     await txHash.wait();
+    try {
+      await postBurnTransaction(userAddress, txHash.hash, 'RewardPoint', 0, 0, CONTRACT_ADDRESS, 'SD');
+      console.log("txHash", txHash)
+    } catch (apiError) {
+      console.warn('Failed to post transaction to backend:', apiError);
+    }
 
     return txHash;
   } catch (error) {

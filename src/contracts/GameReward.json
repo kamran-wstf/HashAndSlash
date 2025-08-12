@@ -3,148 +3,21 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "admin",
+				"name": "_hnsToken",
 				"type": "address"
-			}
-		],
-		"name": "addAdmin",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "_gameType",
+				"name": "_baseURI",
 				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_maxActionsPerBatch",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_minBatchInterval",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_requiredDeposit",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_challengePeriod",
-				"type": "uint256"
-			}
-		],
-		"name": "addGame",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "target",
-				"type": "address"
-			}
-		],
-		"name": "AddressEmptyCode",
-		"type": "error"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "emergencyTokenWithdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"type": "constructor"
 	},
 	{
 		"inputs": [],
-		"name": "emergencyWithdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "implementation",
-				"type": "address"
-			}
-		],
-		"name": "ERC1967InvalidImplementation",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "ERC1967NonPayable",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "FailedCall",
-		"type": "error"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_tokenAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_exchangeRate",
-				"type": "uint256"
-			}
-		],
-		"name": "initialize",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "InvalidInitialization",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "NotInitializing",
-		"type": "error"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			}
-		],
-		"name": "OwnableInvalidOwner",
+		"name": "AccessControlBadConfirmation",
 		"type": "error"
 	},
 	{
@@ -153,219 +26,354 @@
 				"internalType": "address",
 				"name": "account",
 				"type": "address"
-			}
-		],
-		"name": "OwnableUnauthorizedAccount",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "pause",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "redeemPoints",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_newRate",
-				"type": "uint256"
-			}
-		],
-		"name": "setExchangeRate",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "baseReward",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "scoreMultiplier",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "timeBonus",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "accuracyBonus",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "streakBonus",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "batchSize",
-				"type": "uint256"
-			}
-		],
-		"name": "setGameRewards",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
 			},
 			{
 				"internalType": "bytes32",
-				"name": "initialStateHash",
+				"name": "neededRole",
 				"type": "bytes32"
 			}
 		],
-		"name": "startGameSession",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			},
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "timestamp",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "actionType",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "value",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "scoreChange",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct UniversalGamingPlatform.GameAction[]",
-				"name": "actions",
-				"type": "tuple[]"
-			},
-			{
-				"internalType": "uint256",
-				"name": "finalScore",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "finalStateHash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes",
-				"name": "proof",
-				"type": "bytes"
-			}
-		],
-		"name": "submitGameBatch",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "unpause",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newImplementation",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "upgradeToAndCall",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "UUPSUnauthorizedCallContext",
+		"name": "AccessControlUnauthorizedAccount",
 		"type": "error"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
-				"name": "slot",
-				"type": "bytes32"
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "action",
+				"type": "string"
 			}
 		],
-		"name": "UUPSUnsupportedProxiableUUID",
+		"name": "ActivityNotConfigured",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			}
+		],
+		"name": "DuplicateGameName",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "balance",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "needed",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "ERC1155InsufficientBalance",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "approver",
+				"type": "address"
+			}
+		],
+		"name": "ERC1155InvalidApprover",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "idsLength",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "valuesLength",
+				"type": "uint256"
+			}
+		],
+		"name": "ERC1155InvalidArrayLength",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "ERC1155InvalidOperator",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "receiver",
+				"type": "address"
+			}
+		],
+		"name": "ERC1155InvalidReceiver",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			}
+		],
+		"name": "ERC1155InvalidSender",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "ERC1155MissingApprovalForAll",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "fieldName",
+				"type": "string"
+			}
+		],
+		"name": "EmptyString",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "EnforcedPause",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "ExpectedPause",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			}
+		],
+		"name": "GameTokenNotActive",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "required",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "current",
+				"type": "uint256"
+			}
+		],
+		"name": "InsufficientAllowance",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "provided",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "required",
+				"type": "uint256"
+			}
+		],
+		"name": "InsufficientAmount",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "required",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "available",
+				"type": "uint256"
+			}
+		],
+		"name": "InsufficientHnsReserves",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "required",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "available",
+				"type": "uint256"
+			}
+		],
+		"name": "InsufficientPoints",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "required",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "available",
+				"type": "uint256"
+			}
+		],
+		"name": "InsufficientUserBalance",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "points",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "maxAllowed",
+				"type": "uint256"
+			}
+		],
+		"name": "InvalidActivityPoints",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint8",
+				"name": "provided",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint8",
+				"name": "maxAllowed",
+				"type": "uint8"
+			}
+		],
+		"name": "InvalidDecimals",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "provided",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "maxValid",
+				"type": "uint256"
+			}
+		],
+		"name": "InvalidGameId",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "ReentrancyGuardReentrantCall",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "fieldName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "length",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "maxLength",
+				"type": "uint256"
+			}
+		],
+		"name": "StringTooLong",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "ZeroAddress",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "ZeroAmount",
 		"type": "error"
 	},
 	{
@@ -373,30 +381,24 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "address",
-				"name": "player",
-				"type": "address"
-			},
-			{
-				"indexed": true,
 				"internalType": "uint256",
 				"name": "gameId",
 				"type": "uint256"
 			},
 			{
 				"indexed": false,
-				"internalType": "bytes32",
-				"name": "batchHash",
-				"type": "bytes32"
+				"internalType": "string",
+				"name": "action",
+				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "actionsCount",
+				"name": "points",
 				"type": "uint256"
 			}
 		],
-		"name": "BatchSubmitted",
+		"name": "ActivityPointsSet",
 		"type": "event"
 	},
 	{
@@ -404,37 +406,55 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes32",
-				"name": "batchHash",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
 				"internalType": "uint256",
-				"name": "finalScore",
+				"name": "gameId",
 				"type": "uint256"
 			},
 			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "action",
+				"type": "string"
+			},
+			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "rewardsAwarded",
+				"name": "points",
 				"type": "uint256"
 			}
 		],
-		"name": "BatchVerified",
+		"name": "ActivityRecorded",
 		"type": "event"
 	},
 	{
 		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
 				"indexed": false,
-				"internalType": "uint256",
-				"name": "newRate",
-				"type": "uint256"
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
 			}
 		],
-		"name": "ExchangeRateUpdated",
+		"name": "ApprovalForAll",
 		"type": "event"
 	},
 	{
@@ -445,6 +465,43 @@
 				"internalType": "uint256",
 				"name": "gameId",
 				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "burnAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "hnsReturned",
+				"type": "uint256"
+			}
+		],
+		"name": "GameTokenBurned",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
 			},
 			{
 				"indexed": false,
@@ -455,43 +512,23 @@
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "gameType",
+				"name": "symbol",
 				"type": "string"
-			}
-		],
-		"name": "GameAdded",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint64",
-				"name": "version",
-				"type": "uint64"
-			}
-		],
-		"name": "Initialized",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "previousOwner",
-				"type": "address"
 			},
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "hnsLocked",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "initialSupply",
+				"type": "uint256"
 			}
 		],
-		"name": "OwnershipTransferred",
+		"name": "GameTokenCreated",
 		"type": "event"
 	},
 	{
@@ -512,39 +549,26 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "address",
-				"name": "player",
-				"type": "address"
-			},
-			{
-				"indexed": false,
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "gameId",
 				"type": "uint256"
-			}
-		],
-		"name": "PointsAwarded",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
+			},
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "player",
+				"name": "user",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "pointsAmount",
+				"name": "points",
 				"type": "uint256"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "tokenAmount",
+				"name": "gameTokensReceived",
 				"type": "uint256"
 			}
 		],
@@ -556,24 +580,24 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "address",
-				"name": "player",
-				"type": "address"
+				"internalType": "bytes32",
+				"name": "role",
+				"type": "bytes32"
 			},
 			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "previousAdminRole",
+				"type": "bytes32"
 			},
 			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenAmount",
-				"type": "uint256"
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "newAdminRole",
+				"type": "bytes32"
 			}
 		],
-		"name": "RewardsClaimed",
+		"name": "RoleAdminChanged",
 		"type": "event"
 	},
 	{
@@ -581,43 +605,24 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			}
-		],
-		"name": "RewardsUpdated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
+				"internalType": "bytes32",
+				"name": "role",
+				"type": "bytes32"
+			},
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "player",
+				"name": "account",
 				"type": "address"
 			},
 			{
 				"indexed": true,
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "sessionId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes32",
-				"name": "stateHash",
-				"type": "bytes32"
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
 			}
 		],
-		"name": "SessionStarted",
+		"name": "RoleGranted",
 		"type": "event"
 	},
 	{
@@ -626,48 +631,23 @@
 			{
 				"indexed": true,
 				"internalType": "bytes32",
-				"name": "channelId",
+				"name": "role",
 				"type": "bytes32"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "address",
-				"name": "challenger",
+				"name": "account",
 				"type": "address"
 			},
 			{
-				"indexed": false,
-				"internalType": "bytes32",
-				"name": "disputedHash",
-				"type": "bytes32"
-			}
-		],
-		"name": "StateChannelChallenged",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
 				"indexed": true,
-				"internalType": "bytes32",
-				"name": "channelId",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "finalScore",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "challenged",
-				"type": "bool"
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
 			}
 		],
-		"name": "StateChannelClosed",
+		"name": "RoleRevoked",
 		"type": "event"
 	},
 	{
@@ -676,29 +656,35 @@
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "player",
+				"name": "operator",
 				"type": "address"
 			},
 			{
 				"indexed": true,
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
 			},
 			{
 				"indexed": false,
-				"internalType": "bytes32",
-				"name": "channelId",
-				"type": "bytes32"
+				"internalType": "uint256[]",
+				"name": "ids",
+				"type": "uint256[]"
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
-				"name": "deposit",
-				"type": "uint256"
+				"internalType": "uint256[]",
+				"name": "values",
+				"type": "uint256[]"
 			}
 		],
-		"name": "StateChannelOpened",
+		"name": "TransferBatch",
 		"type": "event"
 	},
 	{
@@ -706,24 +692,55 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes32",
-				"name": "channelId",
-				"type": "bytes32"
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
 			},
 			{
-				"indexed": false,
-				"internalType": "bytes32",
-				"name": "newStateHash",
-				"type": "bytes32"
+				"indexed": true,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "newScore",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "value",
 				"type": "uint256"
 			}
 		],
-		"name": "StateChannelUpdated",
+		"name": "TransferSingle",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "value",
+				"type": "string"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "URI",
 		"type": "event"
 	},
 	{
@@ -740,33 +757,222 @@
 		"type": "event"
 	},
 	{
-		"anonymous": false,
-		"inputs": [
+		"inputs": [],
+		"name": "ACTIVITY_MANAGER_ROLE",
+		"outputs": [
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "implementation",
-				"type": "address"
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
 			}
 		],
-		"name": "Upgraded",
-		"type": "event"
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
-		"inputs": [
+		"inputs": [],
+		"name": "DEFAULT_ADMIN_ROLE",
+		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "bytes32",
 				"name": "",
-				"type": "address"
-			},
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "EMERGENCY_ROLE",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "GAME_CREATOR_ROLE",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "MAX_ACTIVITY_POINTS",
+		"outputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "activeSessions",
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "MAX_GAME_TOKEN_DECIMALS",
 		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "MAX_NAME_LENGTH",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "MAX_SYMBOL_LENGTH",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "MIN_HNS_LOCK_AMOUNT",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PAUSER_ROLE",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PRECISION_FACTOR",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "activityPointValues",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address[]",
+				"name": "accounts",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "ids",
+				"type": "uint256[]"
+			}
+		],
+		"name": "balanceOfBatch",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "uint256",
 				"name": "gameId",
@@ -774,106 +980,17 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "startTime",
+				"name": "burnAmount",
 				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "startScore",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "initialStateHash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bool",
-				"name": "isActive",
-				"type": "bool"
 			}
 		],
-		"stateMutability": "view",
+		"name": "burnGameTokenForHNS",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "admins",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "challenges",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "channelId",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "address",
-				"name": "challenger",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "disputedStateHash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes",
-				"name": "gameProof",
-				"type": "bytes"
-			},
-			{
-				"internalType": "uint256",
-				"name": "challengeTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "resolved",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "gameBatches",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "player",
-				"type": "address"
-			},
 			{
 				"internalType": "uint256",
 				"name": "gameId",
@@ -881,76 +998,15 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "sessionId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "finalScore",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "startTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "endTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "stateHash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bool",
-				"name": "verified",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
+				"name": "burnAmount",
 				"type": "uint256"
 			}
 		],
-		"name": "gameRewards",
+		"name": "calculateHNSReturn",
 		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "baseReward",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "scoreMultiplier",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "timeBonus",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "accuracyBonus",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "streakBonus",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "batchSize",
+				"name": "",
 				"type": "uint256"
 			}
 		],
@@ -961,12 +1017,9 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "",
+				"name": "hnsAmount",
 				"type": "uint256"
-			}
-		],
-		"name": "games",
-		"outputs": [
+			},
 			{
 				"internalType": "string",
 				"name": "name",
@@ -974,159 +1027,121 @@
 			},
 			{
 				"internalType": "string",
-				"name": "gameType",
+				"name": "symbol",
 				"type": "string"
 			},
 			{
+				"internalType": "uint8",
+				"name": "decimals",
+				"type": "uint8"
+			}
+		],
+		"name": "createGameToken",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "token",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "emergencyWithdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "gameNames",
+		"outputs": [
+			{
 				"internalType": "bool",
-				"name": "isActive",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "gameTokens",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "symbol",
+				"type": "string"
+			},
+			{
+				"internalType": "uint8",
+				"name": "decimals",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "initialSupply",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "hnsLocked",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "currentSupply",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "active",
 				"type": "bool"
 			},
 			{
 				"internalType": "uint256",
-				"name": "maxActionsPerBatch",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "minBatchInterval",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "requiredDeposit",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "challengePeriod",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "batchHash",
-				"type": "bytes32"
-			}
-		],
-		"name": "getBatchDetails",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "player",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "gameId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "sessionId",
-						"type": "uint256"
-					},
-					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "timestamp",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "actionType",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "value",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "scoreChange",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct UniversalGamingPlatform.GameAction[]",
-						"name": "actions",
-						"type": "tuple[]"
-					},
-					{
-						"internalType": "uint256",
-						"name": "finalScore",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "startTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "endTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "stateHash",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bool",
-						"name": "verified",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct UniversalGamingPlatform.GameBatch",
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_player",
-				"type": "address"
-			}
-		],
-		"name": "getPlayerActivity",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "totalPointsAwarded",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "totalPointsRedeemed",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "lastAwardedAt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "lastRedeemedAt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "redeemCount",
+				"name": "creationTime",
 				"type": "uint256"
 			}
 		],
@@ -1137,172 +1152,26 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "player",
+				"name": "user",
 				"type": "address"
+			}
+		],
+		"name": "getActivityLogs",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "gameIds",
+				"type": "uint256[]"
 			},
 			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			}
-		],
-		"name": "getPlayerBatches",
-		"outputs": [
-			{
-				"internalType": "bytes32[]",
-				"name": "",
-				"type": "bytes32[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "player",
-				"type": "address"
-			}
-		],
-		"name": "getPlayerPendingRewards",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "player",
-				"type": "address"
+				"internalType": "uint256[]",
+				"name": "totalPoints",
+				"type": "uint256[]"
 			},
 			{
-				"internalType": "uint256",
-				"name": "gameId",
-				"type": "uint256"
-			}
-		],
-		"name": "getPlayerSummary",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "totalScore",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "gamesCompleted",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "totalActions",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "averageAccuracy",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "bestTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "currentStreak",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "lastBatchTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "pendingRewards",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct UniversalGamingPlatform.PlayerSummary",
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "channelId",
-				"type": "bytes32"
-			}
-		],
-		"name": "getStateChannel",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "player",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "gameId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "deposit",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "currentScore",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "currentStateHash",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "uint256",
-						"name": "lastUpdateTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "challengePeriod",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "isDisputed",
-						"type": "bool"
-					},
-					{
-						"internalType": "address",
-						"name": "challenger",
-						"type": "address"
-					}
-				],
-				"internalType": "struct UniversalGamingPlatform.StateChannel",
-				"name": "",
-				"type": "tuple"
+				"internalType": "uint256[]",
+				"name": "redeemedPoints",
+				"type": "uint256[]"
 			}
 		],
 		"stateMutability": "view",
@@ -1310,7 +1179,261 @@
 	},
 	{
 		"inputs": [],
-		"name": "globalExchangeRate",
+		"name": "getAllGameIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			}
+		],
+		"name": "getDetailedActivityLogs",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "gameId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "action",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "points",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct HNSGameEcosystem.ActivityLog[]",
+				"name": "activities",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			}
+		],
+		"name": "getGameTokenInfo",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "creator",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "symbol",
+						"type": "string"
+					},
+					{
+						"internalType": "uint8",
+						"name": "decimals",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "initialSupply",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "hnsLocked",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentSupply",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "active",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "creationTime",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct HNSGameEcosystem.GameTokenInfo",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "role",
+				"type": "bytes32"
+			}
+		],
+		"name": "getRoleAdmin",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "getTransactionLogs",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "gameTokenBalance",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalPoints",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "redeemedPoints",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "availablePoints",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "getUserBalances",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "hnsBalance",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "gameIds",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "gameTokenBalances",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "role",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "grantRole",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "role",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "hasRole",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "hnsReserves",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -1323,15 +1446,59 @@
 	},
 	{
 		"inputs": [],
-		"name": "owner",
+		"name": "hnsToken",
 		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "contract IERC20",
 				"name": "",
 				"type": "address"
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			}
+		],
+		"name": "isApprovedForAll",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "nextGameId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "pause",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1348,235 +1515,53 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "platformToken",
-		"outputs": [
+		"inputs": [
 			{
-				"internalType": "contract IERC20",
-				"name": "",
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "user",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "action",
+				"type": "string"
 			}
 		],
-		"stateMutability": "view",
+		"name": "recordActivity",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			},
+			{
 				"internalType": "address",
-				"name": "",
+				"name": "user",
 				"type": "address"
+			},
+			{
+				"internalType": "string[]",
+				"name": "actions",
+				"type": "string[]"
 			}
 		],
-		"name": "playerActivities",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "totalPointsAwarded",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "totalPointsRedeemed",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "lastAwardedAt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "lastRedeemedAt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "redeemCount",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
+		"name": "recordActivityBatch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "playerBalances",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "playerChannels",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "playerGameBatches",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "playerSessionNonce",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "playerSummaries",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "totalScore",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "gamesCompleted",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "totalActions",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "averageAccuracy",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "bestTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "currentStreak",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "lastBatchTime",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "pendingRewards",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "proxiableUUID",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "stateChannels",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "player",
-				"type": "address"
-			},
 			{
 				"internalType": "uint256",
 				"name": "gameId",
@@ -1584,38 +1569,213 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "deposit",
+				"name": "hnsAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "redeemHNSForGameToken",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "gameId",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "currentScore",
+				"name": "points",
 				"type": "uint256"
-			},
+			}
+		],
+		"name": "redeemPointsForGameToken",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "currentStateHash",
+				"name": "role",
 				"type": "bytes32"
 			},
 			{
-				"internalType": "uint256",
-				"name": "lastUpdateTime",
-				"type": "uint256"
-			},
+				"internalType": "address",
+				"name": "callerConfirmation",
+				"type": "address"
+			}
+		],
+		"name": "renounceRole",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "challengePeriod",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "isDisputed",
-				"type": "bool"
+				"internalType": "bytes32",
+				"name": "role",
+				"type": "bytes32"
 			},
 			{
 				"internalType": "address",
-				"name": "challenger",
+				"name": "account",
 				"type": "address"
+			}
+		],
+		"name": "revokeRole",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "ids",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "values",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeBatchTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "action",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "points",
+				"type": "uint256"
+			}
+		],
+		"name": "setActivityPoints",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "gameId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string[]",
+				"name": "actions",
+				"type": "string[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "points",
+				"type": "uint256[]"
+			}
+		],
+		"name": "setActivityPointsBatch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes4",
+				"name": "interfaceId",
+				"type": "bytes4"
+			}
+		],
+		"name": "supportsInterface",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -1623,11 +1783,53 @@
 	},
 	{
 		"inputs": [],
-		"name": "totalGames",
-		"outputs": [
+		"name": "unpause",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "uri",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "userActivities",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "totalPoints",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "redeemedPoints",
 				"type": "uint256"
 			}
 		],
@@ -1640,27 +1842,19 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
-			}
-		],
-		"name": "totalPendingRewards",
-		"outputs": [
+			},
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "UPGRADE_INTERFACE_VERSION",
+		"name": "userGameTokens",
 		"outputs": [
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",

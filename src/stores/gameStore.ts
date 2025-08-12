@@ -4,6 +4,7 @@ import { generateSudoku } from '../utils/sudokuGenerator';
 import { Difficulty } from './settingsStore';
 import { usePointsStore } from './pointsStore';
 import { useWalletStore } from './walletStore';
+import { ethers } from 'ethers';
 
 import { startGameSession, submitGameBatch, redeemPoints } from '../utils/contract';
 
@@ -80,9 +81,10 @@ export const useGameStore = create<GameState>()(
         // Start session on chain
         try {
           // You may want to generate a real initialStateHash based on the board
-          const initialStateHash = '0x' + '0'.repeat(64); // placeholder
-          const gameId = 1; // Replace with your gameId logic
-          await startGameSession(gameId, initialStateHash);
+          const requiredAmount = ethers.utils.parseEther("1")
+          // placeholder
+          const gameId = 2; // Replace with your gameId logic
+          await startGameSession(gameId, requiredAmount.toString());
         } catch (e) {
           console.error('Failed to start game session on chain:', e);
         }

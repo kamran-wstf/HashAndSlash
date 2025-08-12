@@ -3,10 +3,10 @@ import GameRewardABI from '../contracts/GameReward.json';
 
 const CONTRACT_ADDRESS = '0x93D09FfCA6EF76792f19Fed7D12101cf45f6FC6E'; // Update as needed
 // Start a new game session
-export const startGameSession = async (gameId: number, initialStateHash: string, value: string = '0') => {
+export const startGameSession = async (gameId: number, amount: string) => {
   try {
     const contract = await getContract();
-    const tx = await contract.startGameSession(gameId, initialStateHash, { value });
+    const tx = await contract.burnGameTokenForHNS(gameId, amount);
     await tx.wait();
     console.log("start session", tx)
     return true;

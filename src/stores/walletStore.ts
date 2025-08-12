@@ -18,12 +18,29 @@ export const useWalletStore = create<WalletState>((set) => {
       }
 
       const xinfinParams = {
-        chainId: '0x33', // Hexadecimal for 51
-        chainName: 'XDC Apothem Network',
-        nativeCurrency: { name: 'TXDC', symbol: 'TXDC', decimals: 18 },
-        rpcUrls: ['https://rpc.apothem.network'],  //https://rpc.apothem.network //https://rpc.ankr.com/xdc_testnet
+        chainId: '0x32', // Hexadecimal for 51
+        chainName: 'XDC Network',
+        nativeCurrency: { name: 'XDC', symbol: 'XDC', decimals: 18 },
+        rpcUrls: ['https://rpc.xinfin.network'],  //https://rpc.apothem.network //https://rpc.ankr.com/xdc_testnet
         blockExplorerUrls: ['https://testnet.xdcscan.io/'],
       };
+
+      // const xinfinParam = {
+      //   id: 0,
+      //   name: 'XDC Network',
+      //   nativeCurrency: {
+      //     decimals: 18,
+      //     name: 'XDC',
+      //     symbol: 'XDC',
+      //   },
+      //   rpcUrls: {
+      //     default: { http: ['https://rpc.xinfin.network'] },
+      //     public: { http: ['https://rpc.xinfin.network'] },
+      //   },
+      //   blockExplorers: {
+      //     default: { name: 'XDCScan', url: 'https://explorer.xinfin.network' },
+      //   },
+      // }
 
       // Switch or add network
       try {

@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import GameRewardABI from '../contracts/GameReward.json';
 
 const CONTRACT_ADDRESS = '0x93D09FfCA6EF76792f19Fed7D12101cf45f6FC6E'; // Update as needed
+const GAME_ID = 2; // Sudoku game ID
 // Start a new game session
 export const startGameSession = async (gameId: number, amount: string) => {
   try {
@@ -16,54 +17,27 @@ export const startGameSession = async (gameId: number, amount: string) => {
   }
 };
 
-// Submit a batch of actions at game completion
-import { BigNumber } from "ethers";
-
-export const submitGameBatch = async (
-  gameId: number,
-  actions: Array<{ timestamp: number; actionType: number; value: number; scoreChange: number }>,
-  finalScore: number,
-  finalStateHash: string,
-  proof: string
-) => {
+// Record game activities to contract
+export async function recordGameActivity(activities: any[], signer: ethers.Signer, userAddress: string) {
   try {
-    const contract = await getContract();
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, signer);
 
-    // Estimate gas
-    const estimatedGas = await contract.estimateGas.submitGameBatch(
-      gameId,
-      actions,
-      finalScore,
-      finalStateHash,
-      proof
+    // Record batch of activities
+    console.log("activities", activities)
+    const txHash = await contract.recordActivityBatch(
+      GAME_ID,
+      userAddress,
+      activities.map(activity => activity.action)
     );
 
-    // Add a buffer to the estimated gas (e.g., 20% more)
-    const gasLimit = estimatedGas.mul(120).div(100); // +20%
+    await txHash.wait();
 
-    // Optional: Manually set max fee / priority fee (for EIP-1559 chains)
-    const overrides = {
-      gasLimit,
-      maxFeePerGas: BigNumber.from("30000000000"), // 30 Gwei
-      maxPriorityFeePerGas: BigNumber.from("2000000000"), // 2 Gwei
-    };
-
-    const tx = await contract.submitGameBatch(
-      gameId,
-      actions,
-      finalScore,
-      finalStateHash,
-      proof,
-      overrides
-    );
-
-    await tx.wait();
-    return true;
+    return txHash;
   } catch (error) {
-    console.error("Error submitting game batch:", error);
+    console.error('Contract interaction failed:', error);
     throw error;
   }
-};
+}
 
 export const getContract = async () => {
   if (typeof window.ethereum === 'undefined') {

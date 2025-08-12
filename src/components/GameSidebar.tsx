@@ -15,8 +15,8 @@ const GameSidebar: React.FC<{ onEndGame: () => void }> = ({ onEndGame }) => {
                 <h2 className="font-bold text-lg mb-2">Activity</h2>
                 <ul className="max-h-64 overflow-y-auto text-sm">
                     {activityLog.slice().reverse().map((act, idx) => (
-                        <li key={idx} className={act.correct ? "text-green-700" : "text-red-600"}>
-                            [{new Date(act.timestamp).toLocaleTimeString()}] Cell ({act.row + 1},{act.col + 1}) → {act.value} {act.correct ? "✓" : "✗"}
+                        <li key={idx} className={act.action === 'correctmove' ? "text-green-700" : "text-red-600"}>
+                            [{new Date(act.timestamp).toLocaleTimeString()}] {act.action} ({act.row + 1},{act.col + 1}) → {act.value} {act.action === 'correctmove' ? "✓" : "✗"} (+{act.points})
                         </li>
                     ))}
                 </ul>

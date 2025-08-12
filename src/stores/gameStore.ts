@@ -7,7 +7,7 @@ import { useWalletStore } from './walletStore';
 import { ethers } from 'ethers';
 import { checkUserBalances, startGameWithExistingTokens } from '../utils/gameStart';
 
-import { startGameSession, submitGameBatch, redeemPoints } from '../utils/contract';
+import { startGameSession, recordGameActivity, redeemPoints } from '../utils/contract';
 
 export type CellValue = number | null;
 export type CellNotes = number[];
@@ -27,7 +27,7 @@ export interface GameState {
   errors: number;
   useNotes: boolean;
   points: number;
-  activityLog: { row: number, col: number, value: number | null, correct: boolean, timestamp: number }[];
+  activityLog: { action: string; row: number; col: number; value: number | null; points: number; timestamp: number }[];
   balances: {
     gameTokenBalance: bigint;
     hnsBalance: bigint;
@@ -48,8 +48,10 @@ export interface GameState {
   resetGame: () => void;
   clearSelection: () => void;
   addActivity: (row: number, col: number, value: number | null, correct: boolean) => void;
+  recordGameActivity: () => Promise<void>;
   checkBalances: () => Promise<void>;
   clearBlockchainError: () => void;
+  canUserPlay: () => boolean;
 }
 
 export const useGameStore = create<GameState>()(
@@ -206,29 +208,13 @@ export const useGameStore = create<GameState>()(
         if (get().checkCompletion()) {
           set({ status: 'completed' });
 
-          // Only call batch transaction and redeem points when user wins
+          // Record all game activities when user wins
           (async () => {
             try {
-              // Use number of moves as the batch size
-              const moves = get().moves;
-              const gameId = 2; // Use GAME_ID = 2 for Sudoku
-              // Create dummy actions array with length = moves
-              const actions = Array.from({ length: moves }, (_, i) => ({
-                timestamp: Date.now(),
-                actionType: 0, // Replace with actual action type if needed
-                value: 0,      // Replace with actual value if needed
-                scoreChange: 0 // Replace with actual score change if needed
-              }));
-              const finalScore = moves; // Or use your own scoring logic
-              const finalStateHash = '0x' + '0'.repeat(64); // placeholder
-              const proof = '0x'; // placeholder'
-              console.log('Submitting game batch...');
-              await submitGameBatch(gameId, actions, finalScore, finalStateHash, proof);
-
-              // Redeem points (replace with actual points logic)
-              await redeemPoints(100);
+              console.log('Recording game activities...');
+              await get().recordGameActivity();
             } catch (e) {
-              console.error('Failed to submit batch or redeem points:', e);
+              console.error('Failed to record game activities:', e);
             }
           })();
         }
@@ -350,19 +336,59 @@ export const useGameStore = create<GameState>()(
         set({ selectedCell: null });
       },
 
-      addActivity: (row: any, col: any, value: any, correct: any) => set((state) => {
-        const newPoints = Math.max(0, state.points + (correct ? 5 : -2));
+      addActivity: (row: number, col: number, value: number | null, correct: boolean) => set((state) => {
+        const points = correct ? 5 : -2;
+        const newPoints = Math.max(0, state.points + points);
+        const action = correct ? 'correctmove' : 'move';
+
         return {
           points: newPoints,
           activityLog: [
             ...state.activityLog,
-            { row, col, value, correct, timestamp: Date.now() }
+            {
+              action,
+              row,
+              col,
+              value,
+              points,
+              timestamp: Date.now()
+            }
           ]
         };
       }),
 
       clearBlockchainError: () => {
         set({ blockchainError: null });
+      },
+
+      canUserPlay: () => {
+        const { balances } = get();
+        const requiredTokens = BigInt(ethers.utils.parseEther('1').toString());
+        return balances.gameTokenBalance >= requiredTokens;
+      },
+
+      recordGameActivity: async () => {
+        const { address } = useWalletStore.getState();
+        const { activityLog } = get();
+
+        if (!address || activityLog.length === 0) return;
+
+        try {
+          if (!window.ethereum) {
+            throw new Error('MetaMask not installed');
+          }
+
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const signer = provider.getSigner();
+
+          // Call the recordGameActivity function from utils
+          await recordGameActivity(activityLog, signer, address);
+
+          console.log('Game activities recorded successfully');
+        } catch (error) {
+          console.error('Failed to record game activities:', error);
+          set({ blockchainError: 'Failed to record game activities' });
+        }
       },
     }),
     {

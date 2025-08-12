@@ -8,6 +8,7 @@ import StatisticsPage from './pages/StatisticsPage';
 import { useEffect } from 'react';
 import { useSettingsStore } from './stores/settingsStore';
 import { WalletConnect } from './components/WalletConnect';
+import { GameAccessGuard } from './components/GameAccessGuard';
 
 function App() {
   const { initializeSettings } = useSettingsStore();
@@ -23,7 +24,11 @@ function App() {
         <Routes>
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/game" element={<GamePage />} />
+          <Route path="/game" element={
+            <GameAccessGuard>
+              <GamePage />
+            </GameAccessGuard>
+          } />
           <Route path="/how-to-play" element={<HowToPlayPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/statistics" element={<StatisticsPage />} />

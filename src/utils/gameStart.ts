@@ -200,6 +200,77 @@ export async function startGame(userAddress: string, signer: ethers.Signer) {
     }
 }
 
+// Record game activities to contract
+export async function recordGameActivity(activities: any[], signer: ethers.Signer, userAddress: string) {
+    try {
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, GameRewardABI, signer);
+
+        // Record batch of activities
+        const txHash = await contract.recordActivityBatch(
+            GAME_ID,
+            userAddress,
+            activities.map(activity => activity.action)
+        );
+
+        await txHash.wait();
+
+        // Post transaction to backend API
+        try {
+            await postRewardTransaction(
+                userAddress,
+                txHash.hash,
+                activities.length,
+                activities.reduce((sum, activity) => sum + activity.points, 0),
+                CONTRACT_ADDRESS,
+                'GAME_TOKEN'
+            );
+        } catch (apiError) {
+            console.warn('Failed to post reward transaction to backend:', apiError);
+        }
+
+        return txHash;
+    } catch (error) {
+        console.error('Contract interaction failed:', error);
+        throw error;
+    }
+}
+
+// Backend transaction posting for rewards
+async function postRewardTransaction(
+    from: string,
+    transactionHash: string,
+    activityCount: number,
+    totalPoints: number,
+    toAddress: string,
+    gameToken: string
+): Promise<void> {
+    try {
+        console.log("Backend url", CONFIG.BACKEND_URL);
+        const response = await fetch(`${CONFIG.BACKEND_URL}/api/transactions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                from,
+                transactionType: 'Reward',
+                transactionHash,
+                gameToken,
+                activityCount,
+                totalPoints,
+                toAddress
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to post reward transaction');
+        }
+    } catch (error) {
+        console.error('Error posting reward transaction:', error);
+        throw error;
+    }
+}
+
 // Backend transaction posting
 async function postBurnTransaction(
     from: string,

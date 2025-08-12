@@ -17,7 +17,7 @@ import { WalletConnect } from '../components/WalletConnect';
 import { useWalletStore } from '../stores/walletStore';
 import Loader from '../components/Loader';
 import GameSidebar from '../components/GameSidebar';
-import { submitGameBatch } from '../utils/contract';
+import { recordGameActivity } from '../utils/contract';
 import { ethers } from 'ethers';
 
 const GamePage: React.FC = () => {
@@ -106,17 +106,11 @@ const GamePage: React.FC = () => {
 
   // End game handler
   const handleEndGame = async () => {
-    const actions = activityLog.map(act => ({
-      timestamp: act.timestamp,
-      actionType: 1,
-      value: act.value === null ? 0 : act.value,
-      scoreChange: act.correct ? 5 : 0
-    }));
-
-    const finalStateHash = ethers.utils.formatBytes32String("10");
-
     try {
-      await submitGameBatch(1, actions, points, finalStateHash, '0x');
+      if (!window.ethereum) {
+        throw new Error('MetaMask not installed');
+      }
+      await recordGameActivity(activityLog, await new ethers.providers.Web3Provider(window.ethereum).getSigner(), useWalletStore.getState().address!);
       navigate('/'); // Go to home page after successful submission
     } catch (error: any) {
       const message =

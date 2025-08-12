@@ -1,11 +1,20 @@
 import { create } from 'zustand';
 import { ethers } from 'ethers';
+import { ensureUserExists } from '../utils/userManagement';
+
+interface User {
+  userAddress: string;
+  platform: string;
+  metadata: Record<string, any>;
+}
 
 interface WalletState {
   address: string | null;
   isConnected: boolean;
+  user: User | null;
   connect: () => Promise<void>;
   disconnect: () => void;
+  setUser: (user: User | null) => void;
 }
 
 export const useWalletStore = create<WalletState>((set) => {
@@ -77,7 +86,25 @@ export const useWalletStore = create<WalletState>((set) => {
         throw new Error('No accounts found. Please connect to MetaMask.');
       }
 
-      set({ address: accounts[0], isConnected: true });
+      const userAddress = accounts[0];
+
+      // Ensure user exists in backend
+      try {
+        const userResult = await ensureUserExists(userAddress);
+        console.log("userResult", userResult)
+        if (!userResult.success) {
+          console.warn('Failed to ensure user exists in backend:', userResult.error);
+          // Continue with connection even if backend user creation fails
+          set({ address: userAddress, isConnected: true, user: null });
+        } else {
+          console.log('User verified/created in backend:', userAddress);
+          set({ address: userAddress, isConnected: true, user: userResult.data || null });
+        }
+      } catch (userError) {
+        console.warn('Error during user management:', userError);
+        // Continue with connection even if user management fails
+        set({ address: userAddress, isConnected: true, user: null });
+      }
 
       window.ethereum.on('accountsChanged', handleAccountsChanged);
       window.ethereum.on('chainChanged', handleChainChanged);
@@ -90,7 +117,7 @@ export const useWalletStore = create<WalletState>((set) => {
 
 
   const disconnect = () => {
-    set({ address: null, isConnected: false });
+    set({ address: null, isConnected: false, user: null });
     window.location.href = '/';
 
     // Remove event listeners
@@ -117,7 +144,24 @@ export const useWalletStore = create<WalletState>((set) => {
         disconnect();
         return;
       }
-      set({ address: accounts[0], isConnected: true });
+      const userAddress = accounts[0];
+
+      // Ensure user exists in backend for new account
+      try {
+        const userResult = await ensureUserExists(userAddress);
+        if (!userResult.success) {
+          console.warn('Failed to ensure user exists in backend:', userResult.error);
+          // Continue with connection even if backend user creation fails
+          set({ address: userAddress, isConnected: true, user: null });
+        } else {
+          console.log('User verified/created in backend for account change:', userAddress);
+          set({ address: userAddress, isConnected: true, user: userResult.data || null });
+        }
+      } catch (userError) {
+        console.warn('Error during user management for account change:', userError);
+        // Continue with connection even if user management fails
+        set({ address: userAddress, isConnected: true, user: null });
+      }
     }
   };
   const handleChainChanged = () => {
@@ -128,7 +172,9 @@ export const useWalletStore = create<WalletState>((set) => {
   return {
     address: null,
     isConnected: false,
+    user: null,
     connect,
     disconnect,
+    setUser: (user: User | null) => set({ user }),
   };
 });

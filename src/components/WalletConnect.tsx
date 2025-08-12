@@ -1,13 +1,18 @@
 import { useWalletStore } from '../stores/walletStore';
+import { useState } from 'react';
 
 export const WalletConnect = () => {
   const { address, isConnected, connect, disconnect } = useWalletStore();
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const handleConnect = async () => {
+    setIsConnecting(true);
     try {
       await connect();
     } catch (error) {
       alert('Failed to connect wallet. Please make sure MetaMask is installed.');
+    } finally {
+      setIsConnecting(false);
     }
   };
 
@@ -32,9 +37,13 @@ export const WalletConnect = () => {
       ) : (
         <button
           onClick={handleConnect}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          disabled={isConnecting}
+          className={`px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isConnecting
+            ? 'bg-blue-400 cursor-not-allowed'
+            : 'bg-blue-600 hover:bg-blue-700'
+            }`}
         >
-          Connect Wallet
+          {isConnecting ? 'Connecting...' : 'Connect Wallet'}
         </button>
       )}
     </div>
